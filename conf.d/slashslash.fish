@@ -192,7 +192,7 @@ end
 alias !! "eval"
 
 # Setup defaults: user can disable with ss disable
-ss enable !! cat ls cp rm mv cd zip unzip vim nvim vi buck sl git hg grep ack rsync
+ss enable !! cat ls cp rm mv cd zip unzip vim nvim vi sl git hg grep ack rsync
 
 # Builtin plugins
 function __slashslash_buck_completer -a cur
