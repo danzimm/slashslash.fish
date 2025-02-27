@@ -247,23 +247,21 @@ function __slashslash_expand_cmd --description "Expand // based on current cells
 
   test (realpath .) != "$PWD"; and set needs_abs
 
-  __slashslash_load_cells
-
   for arg in $argv
     if string match --quiet -- '-*' $arg
-      echo "$arg"
+      echo -- "$arg"
       continue
     end
     __slashslash_verbose "// Expanding '$arg'"
 
     # Is there // somewhere in this arg?
     if not string match -rq '^(?<cell>[^/\s]*//)(?<subpath>[^\s]*)$' -- $arg
-      echo "$arg"
+      echo -- "$arg"
       continue
     end
 
     if not set idx (contains -i -- "$cell" $__slashslash_current_cells)
-      echo "$arg"
+      echo -- "$arg"
       continue
     end
 
@@ -283,9 +281,9 @@ function __slashslash_expand_cmd --description "Expand // based on current cells
     if set -q needs_abs
       # When we're inside a symlinked directory relative paths get weird, lets
       # fallback to absolute.
-      echo -n (realpath "$abs")
+      echo -n -- (realpath "$abs")
     else
-      echo -n (realpath -s --relative-to=. "$abs")
+      echo -n -- (realpath -s --relative-to=. "$abs")
     end
 
     # Use abs instead of $subpath so that when $subpath is empty
@@ -313,7 +311,7 @@ function __slashslash_complete_cmd -a cur --description "Print completions for a
     end
     for p in (__fish_complete_path $expanded)
       set -l completed (string sub -s $start_idx -- "$p")
-      echo $unexpanded_dirname$completed
+      echo -- $unexpanded_dirname$completed
     end
     for completer_name in $__slashslash_completers
       set -l completer __slashslash_completer_$completer_name
@@ -323,7 +321,7 @@ function __slashslash_complete_cmd -a cur --description "Print completions for a
     __fish_complete_path $cur
     for cell_name in $__slashslash_current_cells
       if test (string sub --length (string length -- "$cur") -- $cell_name) = "$cur"
-        echo $cell_name
+        echo -- $cell_name
       end
     end
   end

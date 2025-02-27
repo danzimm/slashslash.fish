@@ -123,7 +123,7 @@ function __slashslash_load_cells --description "Internal func to load cells from
 end
 
 function __slashslash_invoke --description 'Expand any // and invoke'
-  set -f cmd (__slashslash_expand_cmd -f (string escape -- $argv))
+  set -f cmd (__slashslash_expand_cmd -f -- (string escape -- $argv))
   __slashslash_verbose "//> $cmd"
   eval $cmd
 end
